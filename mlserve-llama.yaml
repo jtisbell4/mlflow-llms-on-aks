@@ -1,0 +1,14 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "mlflow-v2-llama"
+  namespace: "mlflow"
+spec:
+  predictor:
+    nodeSelector:
+      agentpool: gpunp
+    model:
+      modelFormat:
+        name: mlflow
+      protocolVersion: v2
+      storageUri: "https://taylorsllmstorage.blob.core.windows.net/test/llama-cpp/model" 
