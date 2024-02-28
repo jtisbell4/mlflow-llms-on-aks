@@ -1,0 +1,12 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "mlflow-v2-wine"
+  namespace: "mlflow"
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: mlflow
+      protocolVersion: v2
+      storageUri: "https://taylorsllmstorage.blob.core.windows.net/test/artifacts/model"
