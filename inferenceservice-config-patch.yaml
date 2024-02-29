@@ -1,0 +1,10 @@
+data:
+  storageInitializer: |-
+    {
+      "image" : "kserve/storage-initializer:latest",
+      "memoryRequest": "100Mi",
+      "memoryLimit": "3Gi",
+      "cpuRequest": "100m",
+      "cpuLimit": "1",
+      "enableDirectPvcVolumeMount": true,
+    }

@@ -1,14 +1,28 @@
 #!/bin/bash
+CLUSTER_NAME="taylors-gpu-cluster"
+RESOURCE_GROUP="taylors-llm-rg"
 
 az aks create \
-  --resource-group taylors-llm-rg \
-  --name taylors-test-cluster \
+  --resource-group ${RESOURCE_GROUP} \
+  --name ${CLUSTER_NAME} \
   --enable-managed-identity \
   --enable-cluster-autoscaler \
   --min-count 1 \
   --max-count 20 \
   --generate-ssh-keys
-az aks get-credentials --resource-group taylors-llm-rg --name taylors-test-cluster
+az aks nodepool add \
+  --resource-group ${RESOURCE_GROUP} \
+  --cluster-name ${CLUSTER_NAME} \
+  --name gpunp \
+  --node-count 1 \
+  --node-vm-size Standard_NC6s_v3 \
+  --node-taints sku=gpu:NoSchedule \
+  --labels agentpool=gpunp \
+  --aks-custom-headers UseGPUDedicatedVHD=true \
+  --enable-cluster-autoscaler \
+  --min-count 1 \
+  --max-count 3
+az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${CLUSTER_NAME}
 curl -sSL https://github.com/knative/serving/releases/download/knative-v1.10.1/serving-core.yaml \
   | grep 'gcr.io/' | awk '{print $2}' | sort | uniq \
   | xargs -n 1 \
@@ -24,5 +38,5 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.11.0/kserve.yaml
 kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.11.0/kserve-runtimes.yaml
 kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.13.1/serving-default-domain.yaml
-kubectl create namespace mlflow
-kubectl apply -f mlserve-test.yml
+# kubectl create namespace mlflow
+# kubectl apply -f mlserve-llama.yaml

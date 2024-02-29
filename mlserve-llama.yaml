@@ -5,10 +5,13 @@ metadata:
   namespace: "mlflow"
 spec:
   predictor:
-    nodeSelector:
-      agentpool: gpunp
     model:
       modelFormat:
         name: mlflow
       protocolVersion: v2
       storageUri: "https://taylorsllmstorage.blob.core.windows.net/test/llama-cpp/model" 
+    tolerations:
+    - key: sku
+      operator: Equal
+      value: gpu
+      effect: NoSchedule
