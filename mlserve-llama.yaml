@@ -10,8 +10,15 @@ spec:
         name: mlflow
       protocolVersion: v2
       storageUri: "https://taylorsllmstorage.blob.core.windows.net/test/llama-cpp/model" 
+      resources:
+        limits:
+          cpu: '1'
+          memory: 16Gi
+        requests:
+          cpu: '1'
+          memory: 16Gi
     tolerations:
-    - key: sku
-      operator: Equal
-      value: gpu
-      effect: NoSchedule
+      - key: sku
+        operator: Equal
+        value: gpu
+        effect: NoSchedule

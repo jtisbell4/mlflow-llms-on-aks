@@ -1,7 +1,7 @@
 #!/bin/bash
 az aks nodepool add \
     --resource-group taylors-llm-rg \
-    --cluster-name taylors-test-cluster \
+    --cluster-name taylors-gpu-cluster \
     --name gpunp \
     --node-count 1 \
     --node-vm-size Standard_NC6s_v3 \
