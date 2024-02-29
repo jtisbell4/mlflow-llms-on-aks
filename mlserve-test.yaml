@@ -10,3 +10,11 @@ spec:
         name: mlflow
       protocolVersion: v2
       storageUri: "https://taylorsllmstorage.blob.core.windows.net/test/artifacts/model"
+      resources:
+        limits:
+          cpu: '1'
+          memory: 3Gi
+        requests:
+          cpu: '1'
+          memory: 2Gi
+    # timeout: 30
