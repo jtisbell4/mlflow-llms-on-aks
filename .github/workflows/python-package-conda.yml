@@ -2,6 +2,10 @@ name: Python Package using Conda
 on:
   workflow_dispatch:
 
+env:
+  RUN_ID: da174a3779824c1fa7792e650df5b58a
+
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -25,11 +29,12 @@ jobs:
         DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ vars.DATABRICKS_TOKEN }}
         MLFLOW_TRACKING_URI: ${{ vars.MLFLOW_TRACKING_URI }}
+        DEST_PATH: "."
 
       run: |
         export $DATABRICKS_HOST
         export $DATABRICKS_TOKEN
         export $MLFLOW_TRACKING_URI
         pip install mlflow
-        python download_mlflow_artifacts.py
+        python download_mlflow_artifacts.py --run-id $RUN_ID --dest-path $DEST_PATH
     
