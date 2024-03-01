@@ -1,4 +1,5 @@
 import argparse
+import os
 
 import mlflow
 
@@ -18,5 +19,8 @@ if __name__ == "__main__":
         type=str,
     )
     args = parser.parse_args()
+
+    print(os.environ["DATABRICKS_TOKEN"])
+    print(os.environ["DATABRICKS_HOST"])
 
     main(run_id=args.run_id, dest_path=args.dest_path)
