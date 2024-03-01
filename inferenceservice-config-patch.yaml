@@ -4,7 +4,12 @@ data:
       "image" : "kserve/storage-initializer:latest",
       "memoryRequest": "32Gi",
       "memoryLimit": "32Gi",
-      "cpuRequest": "100m",
+      "cpuRequest": "1",
       "cpuLimit": "1",
-      "enableDirectPvcVolumeMount": true,
+      "caBundleConfigMapName": "",
+      "caBundleVolumeMountPath": "/etc/ssl/custom-certs",
+      "enableDirectPvcVolumeMount": false,
+      "enableModelcar": false,
+      "cpuModelcar": "10m",
+      "memoryModelcar": "15Mi"
     }
