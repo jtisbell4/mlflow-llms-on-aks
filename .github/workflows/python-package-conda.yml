@@ -33,7 +33,7 @@ jobs:
         DEST_PATH: "./mlflow_artifacts"
       run: |
         export DATABRICKS_HOST=$DATABRICKS_HOST
-        export DATABRICKS_TOKEN="$DATABRICKS_TOKEN"
+        export DATABRICKS_TOKEN=$DATABRICKS_TOKEN
         export MLFLOW_TRACKING_URI=$MLFLOW_TRACKING_URI
         pip install mlflow
         mlflow artifacts download --run-id $RUN_ID --dst-path $DEST_PATH
