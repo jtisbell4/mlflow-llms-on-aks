@@ -1,4 +1,4 @@
-name: Python Package using Conda
+name: Move MLflow Artifacts to Blob
 on:
   workflow_dispatch:
 
@@ -7,7 +7,7 @@ env:
 
 
 jobs:
-  download-artifact:
+  main-job:
     environment: dev
     runs-on: ubuntu-latest
     strategy:
@@ -25,17 +25,15 @@ jobs:
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         echo $CONDA/bin >> $GITHUB_PATH
         
-    - name: Install dependencies
+    - name: Download mlflow artifacts
       env:
         DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
         MLFLOW_TRACKING_URI: ${{ vars.MLFLOW_TRACKING_URI }}
-        DEST_PATH: "."
-
+        DEST_PATH: "./artifacts"
       run: |
         export DATABRICKS_HOST=$DATABRICKS_HOST
         export DATABRICKS_TOKEN=$DATABRICKS_TOKEN
         export MLFLOW_TRACKING_URI=$MLFLOW_TRACKING_URI
         pip install mlflow
         python download_mlflow_artifacts.py --run-id $RUN_ID --dest-path $DEST_PATH
-    
