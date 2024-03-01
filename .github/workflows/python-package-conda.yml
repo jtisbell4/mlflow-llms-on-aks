@@ -30,10 +30,10 @@ jobs:
         DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
         MLFLOW_TRACKING_URI: ${{ vars.MLFLOW_TRACKING_URI }}
-        DEST_PATH: "./artifacts"
+        DEST_PATH: "./mlflow_artifacts"
       run: |
         export DATABRICKS_HOST=$DATABRICKS_HOST
         export DATABRICKS_TOKEN="$DATABRICKS_TOKEN"
         export MLFLOW_TRACKING_URI=$MLFLOW_TRACKING_URI
         pip install mlflow
-        python download_mlflow_artifacts.py --run-id $RUN_ID --dest-path $DEST_PATH
+        mlflow artifacts download --run-id $RUN_ID --dst-path $DEST_PATH
