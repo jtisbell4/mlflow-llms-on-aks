@@ -36,4 +36,4 @@ jobs:
         export DATABRICKS_TOKEN=$DATABRICKS_TOKEN
         export MLFLOW_TRACKING_URI=$MLFLOW_TRACKING_URI
         pip install mlflow
-        mlflow artifacts download --run-id $RUN_ID --dst-path $DEST_PATH
+        mlflow artifacts download --run-id $RUN_ID
