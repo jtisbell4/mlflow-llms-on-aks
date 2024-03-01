@@ -12,13 +12,16 @@ spec:
       storageUri: "https://taylorsllmstorage.blob.core.windows.net/test/llama-cpp/model" 
       resources:
         limits:
-          cpu: '1'
-          memory: 16Gi
+          cpu: "2"
+          memory: 32Gi
+          nvidia.com/gpu: "1"
         requests:
-          cpu: '1'
-          memory: 16Gi
+          cpu: "2"
+          memory: 32Gi
+          nvidia.com/gpu: "1"
     tolerations:
       - key: sku
         operator: Equal
         value: gpu
         effect: NoSchedule
+    
