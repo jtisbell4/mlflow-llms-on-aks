@@ -1,5 +1,4 @@
 name: Python Package using Conda
-
 on:
   workflow_dispatch:
 
@@ -23,9 +22,14 @@ jobs:
         
     - name: Install dependencies
       env:
-        run_id:
-        dest_path:
+        DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ vars.DATABRICKS_TOKEN }}
+        MLFLOW_TRACKING_URI: ${{ vars.MLFLOW_TRACKING_URI }}
+
       run: |
+        export $DATABRICKS_HOST
+        export $DATABRICKS_TOKEN
+        export $MLFLOW_TRACKING_URI
         pip install mlflow
         python download_mlflow_artifacts.py
     
