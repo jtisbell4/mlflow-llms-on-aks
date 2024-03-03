@@ -44,5 +44,5 @@ jobs:
     - name: Conda pack
       run: |
         conda install conda-pack
-        conda create -f artifacts/conda.yaml
+        conda create -n mlflow_env -f artifacts/conda.yaml
         conda pack -n mlflow_env
