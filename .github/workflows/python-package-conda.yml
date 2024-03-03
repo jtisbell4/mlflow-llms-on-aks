@@ -24,18 +24,25 @@ jobs:
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         echo $CONDA/bin >> $GITHUB_PATH
-        
-    - name: Download mlflow artifacts
-      env:
-        DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        MLFLOW_TRACKING_URI: ${{ vars.MLFLOW_TRACKING_URI }}
-        DEST_PATH: "./mlflow_artifacts"
+    
+    # Not able to run due to IP allow list    
+    # - name: Download mlflow artifacts
+    #   env:
+    #     DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+    #     DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+    #     MLFLOW_TRACKING_URI: ${{ vars.MLFLOW_TRACKING_URI }}
+    #     DEST_PATH: "./mlflow_artifacts"
+    #   run: |
+    #     export DATABRICKS_HOST=$DATABRICKS_HOST
+    #     export DATABRICKS_TOKEN=$DATABRICKS_TOKEN
+    #     export MLFLOW_TRACKING_URI=$MLFLOW_TRACKING_URI
+    #     curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+    #     databricks configure --token --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
+    #     pip install mlflow
+    #     mlflow artifacts download --run-id $RUN_ID --dst-path $DEST_PATH
+
+    - name: Conda pack
       run: |
-        export DATABRICKS_HOST=$DATABRICKS_HOST
-        export DATABRICKS_TOKEN=$DATABRICKS_TOKEN
-        export MLFLOW_TRACKING_URI=$MLFLOW_TRACKING_URI
-        curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-        databricks configure --token --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
-        pip install mlflow
-        mlflow artifacts download --run-id $RUN_ID --dst-path $DEST_PATH
+        conda install conda-pack
+        conda create -f artifacts/conda.yaml
+        conda pack -n mlflow_env
