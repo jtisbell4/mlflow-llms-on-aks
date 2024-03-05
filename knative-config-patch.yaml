@@ -1,3 +1,0 @@
-data:
-    kubernetes.podspec-nodeselector: "enabled"
-    kubernetes.podspec-tolerations: "enabled"
