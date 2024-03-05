@@ -6,4 +6,4 @@ curl \
     -X POST \
     -H 'Content-Type: application/json' \
     -d @./test_input.json \
-    http://${INGRESS_URL}/seldon/seldon/mlflow/api/v1.0/predictions
+    http://${INGRESS_URL}/seldon/seldon/mlflow-llm/api/v1.0/predictions
