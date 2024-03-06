@@ -1,0 +1,2 @@
+az storage account create --name taylorsllmstorage --resource-group taylors-llm-rg --location eastus --sku Standard_RAGRS --kind StorageV2 --allow-blob-public-access true
+az storage container create -n test --public-access container --account-name taylorsllmstorage --resource-group taylors-llm-rg
