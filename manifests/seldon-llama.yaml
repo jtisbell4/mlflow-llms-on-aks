@@ -39,6 +39,11 @@ spec:
               cpu: "2"
               memory: 32Gi
               nvidia.com/gpu: "1"
+          env:
+            - name: CMAKE_ARGS
+              value: -DLLAMA_CUBLAS=on 
+            - name: FORCE_CMAKE
+              value: "1"
         tolerations:
         - key: sku
           operator: Equal
