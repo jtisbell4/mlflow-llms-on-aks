@@ -1,0 +1,59 @@
+apiVersion: machinelearning.seldon.io/v1alpha2
+kind: SeldonDeployment
+metadata:
+  name: mlflow-llm-mistral
+  namespace: seldon
+spec:
+  name: llm
+  predictors:
+  - componentSpecs:
+    - spec:
+        # We are setting high failureThreshold as installing conda dependencies
+        # can take long time and we want to avoid k8s killing the container prematurely
+        containers:
+        - name: llm
+          image: seldonio/mlflowserver:1.18.1
+          livenessProbe:
+            initialDelaySeconds: 80
+            failureThreshold: 400
+            periodSeconds: 5
+            successThreshold: 1
+            httpGet:
+              path: /health/ping
+              port: http
+              scheme: HTTP
+          readinessProbe:
+            initialDelaySeconds: 80
+            failureThreshold: 400
+            periodSeconds: 5
+            successThreshold: 1
+            httpGet:
+              path: /health/ping
+              port: http
+              scheme: HTTP
+          resources:
+            limits:
+              cpu: "2"
+              memory: 32Gi
+              nvidia.com/gpu: "1"
+            requests:
+              cpu: "2"
+              memory: 32Gi
+              nvidia.com/gpu: "1"
+        - name: llm-model-initializer
+          image: seldonio/rclone-storage-initializer:1.18.1
+        - name: seldon-container-engine
+          image: seldonio/seldon-core-executor:1.18.1
+        tolerations:
+        - key: sku
+          operator: Equal
+          value: gpu
+          effect: NoSchedule
+    graph:
+      children: []
+      implementation: MLFLOW_SERVER
+      modelUri: azureblob:test/mistral/model
+      name: llm
+      envSecretRefName: seldon-rclone-secret
+    name: default
+    replicas: 1
