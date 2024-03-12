@@ -12,7 +12,7 @@ spec:
         # can take long time and we want to avoid k8s killing the container prematurely
         containers:
         - name: llm
-          image: seldonio/mlflowserver:1.18.1
+          # image: seldonio/mlflowserver:1.18.1
           livenessProbe:
             initialDelaySeconds: 80
             failureThreshold: 400
@@ -40,15 +40,11 @@ spec:
               cpu: "2"
               memory: 32Gi
               nvidia.com/gpu: "1"
-        - name: llm-model-initializer
-          image: seldonio/rclone-storage-initializer:1.18.1
-        - name: seldon-container-engine
-          image: seldonio/seldon-core-executor:1.18.1
         tolerations:
         - key: sku
           operator: Equal
           value: gpu
-          effect: NoSchedule
+          effect: NoSchedule  
     graph:
       children: []
       implementation: MLFLOW_SERVER
