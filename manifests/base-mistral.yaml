@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mistral
+  namespace: basic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: mistral-model
+  template:
+    metadata:
+      labels:
+        component: mistral-model
+    spec:
+      containers:
+      - name: mistral-container
+        image: taylorscontainerregistry.azurecr.io/mistral:latest
+        ports:
+          - containerPort: 8080
+        livenessProbe:
+          initialDelaySeconds: 80
+          failureThreshold: 400
+          periodSeconds: 5
+          successThreshold: 1
+          httpGet:
+            path: /health/ping
+            port: http
+            scheme: HTTP
+        readinessProbe:
+          initialDelaySeconds: 80
+          failureThreshold: 400
+          periodSeconds: 5
+          successThreshold: 1
+          httpGet:
+            path: /health/ping
+            port: http
+            scheme: HTTP
+        resources:
+          limits:
+            cpu: "2"
+            memory: 32Gi
+            nvidia.com/gpu: "1"
+          requests:
+            cpu: "2"
+            memory: 32Gi
+            nvidia.com/gpu: "1"
+      tolerations:
+      - key: sku
+        operator: Equal
+        value: gpu
+        effect: NoSchedule  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mistral-service
+  namespace: basic
+spec:
+  type: LoadBalancer
+  selector:
+    component: mistral-model
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080

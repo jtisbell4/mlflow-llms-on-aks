@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wine
+  namespace: basic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: wine-model
+  template:
+    metadata:
+      labels:
+        component: wine-model
+    spec:
+      containers:
+      - name: wine-container
+        image: taylorscontainerregistry.azurecr.io/wine:latest
+        ports:
+          - containerPort: 8080
+        # env:
+        # - name: hf_access_token
+        #   value: <your_hf_access_token>
+        # resources:
+        #   limits:
+        #     nvidia.com/gpu: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wine-service
+  namespace: basic
+spec:
+  type: LoadBalancer
+  selector:
+    component: wine-model
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
