@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llama-cpp
+  namespace: basic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: llama-cpp-model
+  template:
+    metadata:
+      labels:
+        component: llama-cpp-model
+    spec:
+      containers:
+      - name: llama-cpp-container
+        image: taylorscontainerregistry.azurecr.io/llama-cpp:latest
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            cpu: "2"
+            memory: 32Gi
+          requests:
+            cpu: "2"
+            memory: 32Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llama-cpp-service
+  namespace: basic
+spec:
+  type: LoadBalancer
+  selector:
+    component: llama-cpp-model
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
